@@ -19,6 +19,8 @@ public class BlogUserService {
 	
 	@Transactional
 	public int 회원가입(BlogUser user) {
+		System.out.println("BlogUserService.회원가입()");
+		
 		try {
 			Calendar cal = Calendar.getInstance();
 			Timestamp currentTimestamp = new Timestamp(cal.getTime().getTime());
@@ -34,7 +36,7 @@ public class BlogUserService {
 		return -1;
 	}
 	
-//	@Transactional(readOnly = true)  // SELECT할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료(정합성)
+//	@Transactional(readOnly = true)  // SELECT할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료(정합성) 
 //	public BlogUser 로그인(BlogUser user) {
 //		return blogUserRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 //	}
