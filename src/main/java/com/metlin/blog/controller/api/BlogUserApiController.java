@@ -21,7 +21,7 @@ public class BlogUserApiController {
 	@PostMapping("/auth/joinProc")
 	public ResponseDto<Integer> save(@RequestBody BlogUser user) {
 		int result = blogUserService.회원가입(user);
-		
+
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), result);
 	}
 	

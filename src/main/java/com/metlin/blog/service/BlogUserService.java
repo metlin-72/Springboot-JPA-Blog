@@ -33,7 +33,7 @@ public class BlogUserService {
 			user.setPassword(encPasswrod);
 			user.setRole(RoleType.USER);
 			user.setUpdateDt(currentTimestamp);
-			
+
 			blogUserRepository.save(user);
 			return 1;
 		} catch (Exception e) {
