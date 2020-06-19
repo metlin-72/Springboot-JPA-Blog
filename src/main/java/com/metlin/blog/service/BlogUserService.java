@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +18,22 @@ public class BlogUserService {
 	@Autowired
 	private BlogUserRepository blogUserRepository;
 	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+	
 	@Transactional
 	public int 회원가입(BlogUser user) {
-		System.out.println("BlogUserService.회원가입()");
+		String rawPassword = user.getPassword();
+		String encPasswrod = encoder.encode(rawPassword);  //해쉬
 		
-		try {
+		try {			
 			Calendar cal = Calendar.getInstance();
 			Timestamp currentTimestamp = new Timestamp(cal.getTime().getTime());
 			
+			user.setPassword(encPasswrod);
 			user.setRole(RoleType.USER);
 			user.setUpdateDt(currentTimestamp);
+			
 			blogUserRepository.save(user);
 			return 1;
 		} catch (Exception e) {
