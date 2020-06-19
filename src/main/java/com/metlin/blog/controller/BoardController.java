@@ -9,12 +9,12 @@ import com.metlin.blog.config.auth.PrincipalDetail;
 @Controller
 public class BoardController {
 	
-	 // 컨트롤러에서 세션을 어떻게 찾는지 ?
+	 // 컨트롤러에서 세션을 어떻게 찾는지 ?    
 	@GetMapping({"", "/"})
 	public String index(@AuthenticationPrincipal PrincipalDetail principal) { 
 		System.out.println("로그인 사용자 아이디: " + principal.getUsername());
 		System.out.println("로그인 사용자 패스워드: " + principal.getPassword());
 		
-		return "index";
+		return "index";    
 	}
 }
