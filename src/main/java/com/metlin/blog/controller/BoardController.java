@@ -15,6 +15,6 @@ public class BoardController {
 		System.out.println("로그인 사용자 아이디: " + principal.getUsername());
 		System.out.println("로그인 사용자 패스워드: " + principal.getPassword());
 		
-		return "index";
+		return "index";    
 	}
 }
