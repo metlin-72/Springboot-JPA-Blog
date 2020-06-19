@@ -12,7 +12,7 @@ import com.metlin.blog.model.BlogUser;
 @RestController
 public class HttpControllerTest {
 	
-	private static final String TAG = "HttpControllerTest: ";
+	//private static final String TAG = "HttpControllerTest: ";
 	
 	@GetMapping("/http/get")
 	public String getTest(BlogUser user) {
