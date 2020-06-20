@@ -1,0 +1,59 @@
+// 글저장
+$("#btn-save").on("click", function(){
+	var data = {
+			title: $("#title").val(),
+			content: $("#content").val()
+	}
+	
+	$.ajax({
+		type: "post",
+		url: "/api/board",
+		data: JSON.stringify(data),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json"
+	}).done(function(resp ){
+		alert("글쓰기가 완료되었습니다.");
+		location.href="/"
+	}).fail(function(error){
+		alert(JSON.stringify(error));
+	});
+});
+
+//글삭제
+$("#btn-delete").on("click", function(){
+	var id = $("#spnId").text();
+	
+	$.ajax({
+		type: "delete",
+		url: "/api/board/" + id,
+		dataType: "json"
+	}).done(function(resp ){
+		alert("삭제가 완료되었습니다.");
+		location.href="/"
+	}).fail(function(error){
+		alert(JSON.stringify(error));
+	});
+});
+
+//글수정
+$("#btn-update").on("click", function(){
+	var id = $("#boardId").val();
+	
+	var data = {
+			title: $("#title").val(),
+			content: $("#content").val()
+	}
+	
+	$.ajax({
+		type: "put",
+		url: "/api/board/" + id,
+		data: JSON.stringify(data),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json"
+	}).done(function(resp ){
+		alert("글수정이 완료되었습니다.");
+		location.href="/board/" + id; 
+	}).fail(function(error){
+		alert(JSON.stringify(error));
+	});
+});
