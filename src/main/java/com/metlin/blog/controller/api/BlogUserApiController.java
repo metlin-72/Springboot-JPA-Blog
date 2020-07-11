@@ -3,6 +3,7 @@ package com.metlin.blog.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,12 @@ public class BlogUserApiController {
 		int result = blogUserService.회원가입(user);
 
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), result);
+	}
+	
+	@PutMapping("/user")
+	public ResponseDto<Integer> update(@RequestBody BlogUser user){
+		blogUserService.회원수정(user);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	
 //	@PostMapping("/api/user/login")

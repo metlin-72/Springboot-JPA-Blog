@@ -39,8 +39,25 @@ public class BlogUserService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("BlogUserService : 회원가입() : " + e.getMessage());
-		}
+		} 
 		return -1;
+	}
+	
+	@Transactional
+	public void 회원수정(BlogUser user) {
+		BlogUser srcUser = blogUserRepository.findById(user.getId()).orElseThrow(() -> {
+			return new IllegalArgumentException("회원 찾기 실패");
+		});
+		
+		String rawPassword = srcUser.getPassword();
+		String encPassword = encoder.encode(user.getPassword());
+		
+		Calendar cal = Calendar.getInstance();
+		Timestamp currentTimestamp = new Timestamp(cal.getTime().getTime());
+		
+		srcUser.setPassword(encPassword);
+		srcUser.setEmail(user.getEmail());
+		srcUser.setUpdateDt(currentTimestamp);
 	}
 	
 //	@Transactional(readOnly = true)  // SELECT할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료(정합성) 
