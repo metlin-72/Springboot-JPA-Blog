@@ -10,6 +10,7 @@ import com.metlin.blog.model.BlogUser;
 
 import lombok.Getter;
 
+// 공부하자
 // 스프링 시뮤리티가 로그인 요청을 가로채서 로그인을 진행하고 완료가 되면 UserDetails 타입의 오브젝트를
 // 스프링 시큐리티의 고유한 세션저장소에 저장을 해준다
 @Getter
