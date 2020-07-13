@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +24,10 @@ public class BlogUserService {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
-	
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
 	@Transactional
 	public int 회원가입(BlogUser user) {
 		String rawPassword = user.getPassword();
@@ -49,7 +56,6 @@ public class BlogUserService {
 			return new IllegalArgumentException("회원 찾기 실패");
 		});
 		
-		String rawPassword = srcUser.getPassword();
 		String encPassword = encoder.encode(user.getPassword());
 		
 		Calendar cal = Calendar.getInstance();
@@ -58,11 +64,13 @@ public class BlogUserService {
 		srcUser.setPassword(encPassword);
 		srcUser.setEmail(user.getEmail());
 		srcUser.setUpdateDt(currentTimestamp);
+
+		//세션 변경
+		Authentication authentication =
+				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
 	}
 	
-//	@Transactional(readOnly = true)  // SELECT할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료(정합성) 
-//	public BlogUser 로그인(BlogUser user) {
-//		return blogUserRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-//	}
 }
  
