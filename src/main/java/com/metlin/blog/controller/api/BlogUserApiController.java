@@ -31,16 +31,5 @@ public class BlogUserApiController {
 		blogUserService.회원수정(user);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
-	
-//	@PostMapping("/api/user/login")
-//	public ResponseDto<Integer> login(@RequestBody BlogUser user, HttpSession session) {
-//		System.out.println("BlogUserApiController : login 호출됨.");
-//		BlogUser principal = blogUserService.로그인(user);
-//		
-//		if(principal != null) {
-//			session.setAttribute("principal", principal);
-//		}
-//		
-//		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-//	}
+
 }
