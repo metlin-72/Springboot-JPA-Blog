@@ -29,7 +29,7 @@ public class BlogUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private int id;
 
-	@Column(nullable = false, unique = true, length = 50)
+	@Column(nullable = false, unique = true, length = 100)
 	private String username;
 	
 	@Column(nullable = false, length = 100)
@@ -47,12 +47,6 @@ public class BlogUser {
 	
 	private Timestamp updateDt;
 	
-//	@Builder
-//	public User(String id, int seq, String username, String password, String email) {
-//		this.id = id;
-//		this.username = username;
-//		this.password = password;
-//		this.email = email;
-//	}
+	private String oauth;
 
 }
