@@ -1,9 +1,10 @@
 package com.metlin.blog.service;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-
+import com.metlin.blog.model.BlogUser;
+import com.metlin.blog.model.RoleType;
+import com.metlin.blog.repository.BlogUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,13 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.metlin.blog.model.BlogUser;
-import com.metlin.blog.model.RoleType;
-import com.metlin.blog.repository.BlogUserRepository;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 @Service
 public class BlogUserService {
-	
+	@Value("${cos.key}")
+	private String cosKey;
+
 	@Autowired
 	private BlogUserRepository blogUserRepository;
 	
@@ -55,15 +57,19 @@ public class BlogUserService {
 		BlogUser srcUser = blogUserRepository.findById(user.getId()).orElseThrow(() -> {
 			return new IllegalArgumentException("회원 찾기 실패");
 		});
-		
-		String encPassword = encoder.encode(user.getPassword());
-		
+
+		if ("".equals(srcUser.getOauth()) || srcUser.getOauth() == null) {
+			String encPassword = encoder.encode(user.getPassword());
+			srcUser.setPassword(encPassword);
+		} else {
+			user.setPassword(cosKey);
+		}
+
 		Calendar cal = Calendar.getInstance();
 		Timestamp currentTimestamp = new Timestamp(cal.getTime().getTime());
-		
-		srcUser.setPassword(encPassword);
-		srcUser.setEmail(user.getEmail());
 		srcUser.setUpdateDt(currentTimestamp);
+
+		srcUser.setEmail(user.getEmail());
 
 		//세션 변경
 		Authentication authentication =
@@ -71,6 +77,12 @@ public class BlogUserService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 	}
-	
+
+	@Transactional(readOnly = true)
+	public BlogUser 회원찾기(String username) {
+		BlogUser blogUser = blogUserRepository.findByUsername(username).orElseGet(() -> new BlogUser());
+
+		return blogUser;
+	}
 }
  
