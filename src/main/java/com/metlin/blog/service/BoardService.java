@@ -2,6 +2,7 @@ package com.metlin.blog.service;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +40,7 @@ public class BoardService {
 
 	@Transactional(readOnly = true)
 	public Board 글상세보기(int id) {
-		return boardRepository.findById(id).orElseThrow( ()-> { return new IllegalArgumentException("글 상세 보기 실패: 게시글을 찾을 수 없습니다."); } );
+		return boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글 상세 보기 실패: 게시글을 찾을 수 없습니다."));
 	}
 	
 	@Transactional

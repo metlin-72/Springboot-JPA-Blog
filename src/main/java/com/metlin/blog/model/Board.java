@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -48,9 +49,10 @@ public class Board {
 	private Timestamp updateDt;
 	
 	@ManyToOne(fetch = FetchType.EAGER)  //many=Board, one=BlogUser
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "user_id")
 	private BlogUser user;
 	
 	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // mappedBy 연관관계의 주인이 아니다. (난 FK가 아니다.)
-	private List<Reply> reply;
+	@JsonIgnoreProperties({"board"})
+	private List<Reply> replys;
 }
