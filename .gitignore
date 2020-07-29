@@ -30,3 +30,4 @@ build/
 ### VS Code ###
 .vscode/
 /.tern-project
+/src/main/resources/rebel.xml
