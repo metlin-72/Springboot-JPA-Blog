@@ -1,34 +1,27 @@
 package com.metlin.blog.service;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.function.Supplier;
-
 import com.metlin.blog.dto.ReplySaveRequestDto;
+import com.metlin.blog.model.BlogUser;
+import com.metlin.blog.model.Board;
 import com.metlin.blog.model.Reply;
 import com.metlin.blog.repository.BlogUserRepository;
+import com.metlin.blog.repository.BoardRepository;
 import com.metlin.blog.repository.ReplyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.metlin.blog.model.BlogUser;
-import com.metlin.blog.model.Board;
-import com.metlin.blog.repository.BoardRepository;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
-
-	@Autowired
-	private BlogUserRepository blogUserRepository;
-
-	@Autowired
-	private BoardRepository boardRepository;
-
-	@Autowired
-	private ReplyRepository replyRepository;
+	private final BlogUserRepository blogUserRepository;
+	private final BoardRepository boardRepository;
+	private final ReplyRepository replyRepository;
 
 	@Transactional
 	public void 글쓰기(Board board, BlogUser blogUser) {

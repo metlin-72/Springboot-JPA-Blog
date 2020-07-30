@@ -3,7 +3,7 @@ package com.metlin.blog.service;
 import com.metlin.blog.model.BlogUser;
 import com.metlin.blog.model.RoleType;
 import com.metlin.blog.repository.BlogUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,18 +17,14 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 @Service
+@RequiredArgsConstructor
 public class BlogUserService {
 	@Value("${cos.key}")
 	private String cosKey;
 
-	@Autowired
-	private BlogUserRepository blogUserRepository;
-	
-	@Autowired
-	private BCryptPasswordEncoder encoder;
-
-	@Autowired
-	private AuthenticationManager authenticationManager;
+	private final BlogUserRepository blogUserRepository;
+	private final BCryptPasswordEncoder encoder;
+	private final AuthenticationManager authenticationManager;
 
 	@Transactional
 	public int 회원가입(BlogUser user) {
