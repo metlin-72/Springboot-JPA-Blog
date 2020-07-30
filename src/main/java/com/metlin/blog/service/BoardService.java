@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.function.Supplier;
 
+import com.metlin.blog.dto.ReplySaveRequestDto;
+import com.metlin.blog.model.Reply;
+import com.metlin.blog.repository.BlogUserRepository;
+import com.metlin.blog.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +20,16 @@ import com.metlin.blog.repository.BoardRepository;
 
 @Service
 public class BoardService {
-	
+
+	@Autowired
+	private BlogUserRepository blogUserRepository;
+
 	@Autowired
 	private BoardRepository boardRepository;
-	
+
+	@Autowired
+	private ReplyRepository replyRepository;
+
 	@Transactional
 	public void 글쓰기(Board board, BlogUser blogUser) {
 		Calendar cal = Calendar.getInstance();
@@ -62,6 +72,26 @@ public class BoardService {
 
 		// 해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료됩니다. 이때 더티체킹 - 자동업데이트가 됨. DB flush 
 	}
-	
+
+	@Transactional
+	public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+		BlogUser blogUser = blogUserRepository.findById(replySaveRequestDto.getUserId())
+				.orElseThrow(() -> new IllegalArgumentException("댓글 쓰기 실패: 사용자를 찾을 수 없습니다."));
+
+		Board board = boardRepository.findById(replySaveRequestDto.getBoardId())
+				.orElseThrow(() -> new IllegalArgumentException("댓글 쓰기 실패: 게시글을 찾을 수 없습니다."));
+
+		Calendar cal = Calendar.getInstance();
+		Timestamp nowTimestamp = new Timestamp(cal.getTime().getTime());
+
+		Reply saveReply = Reply.builder()
+							.user(blogUser)
+							.board(board)
+							.updateDt(nowTimestamp)
+							.content(replySaveRequestDto.getContent())
+							.build();
+
+		replyRepository.save(saveReply);
+	}
 }
  

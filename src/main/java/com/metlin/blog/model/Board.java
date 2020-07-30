@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OrderBy;
 
 @Data
 @AllArgsConstructor
@@ -54,5 +55,6 @@ public class Board {
 	
 	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // mappedBy 연관관계의 주인이 아니다. (난 FK가 아니다.)
 	@JsonIgnoreProperties({"board"})
+	@OrderBy(clause = "id desc")
 	private List<Reply> replys;
 }
