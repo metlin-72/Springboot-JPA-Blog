@@ -44,13 +44,15 @@
     <br>
     <div class="card">
         <div class="card-header">댓글 리스트</div>
-        <ul id="reply--box" class="list-group">
+        <ul id="reply-box" class="list-group">
             <c:forEach var="reply" items="${board.replys}">
-                <li id="reply--1" class="list-group-item d-flex justify-content-between">
+                <li id="reply-ly" class="list-group-item d-flex justify-content-between">
                     <div>${reply.content}</div>
                     <div class="d-flex">
                         <div class="font-italic">작성자: ${reply.user.username} &nbsp;</div>
-                        <button class="badge">삭제</button>
+                        <c:if test="${reply.user.id eq principal.blogUser.id}">
+                            <button class="badge" data-boardid="${board.id}" data-replyid="${reply.id}">삭제</button>
+                        </c:if>
                     </div>
                 </li>
             </c:forEach>

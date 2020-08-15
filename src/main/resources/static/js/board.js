@@ -79,3 +79,20 @@ $("#btn-reply-save").on("click", function (){
 		alert(JSON.stringify(error));
 	});
 });
+
+//댓글삭제
+$(".badge").on("click", function (){
+	var boardId = $(this).data("boardid");
+	var replyId = $(this).data("replyid");
+
+	$.ajax({
+		type: "delete",
+		url: "/api/board/" + boardId + "/reply/" + replyId,
+		dataType: "json"
+	}).done(function(resp ){
+		alert("댓글삭제 성공.");
+		location.href = "/board/" + boardId;
+	}).fail(function(error){
+		alert(JSON.stringify(error));
+	});
+});
